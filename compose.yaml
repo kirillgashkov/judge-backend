@@ -1,0 +1,8 @@
+services:
+  api:
+    build:
+      context: .
+    env_file: .env
+    command: api
+    ports:
+      - 8080:8080
