@@ -1,3 +1,11 @@
+# DevTools
+
+lock:
+	poetry lock
+.PHONY: lock
+
+# Docker
+
 docker-build:
 	docker compose -f compose.dev.yaml build
 .PHONY: docker-build
