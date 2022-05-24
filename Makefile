@@ -24,13 +24,6 @@ test:
 validate: lint test
 .PHONY: validate
 
-test:
-	poetry run pytest
-.PHONY: test
-
-validate: lint test
-.PHONY: validate
-
 # Docker
 
 docker-build:
