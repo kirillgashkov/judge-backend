@@ -15,6 +15,13 @@ format:
 	poetry run isort --atomic .
 	poetry run black .
 
+test:
+	poetry run pytest
+.PHONY: test
+
+validate: lint test
+.PHONY: validate
+
 # Docker
 
 docker-build:
