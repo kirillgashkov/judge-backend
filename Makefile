@@ -9,11 +9,13 @@ lint:
 	poetry run isort --check --atomic .
 	poetry run black --check .
 	poetry run mypy .
+.PHONY: lint
 
 format:
 	poetry run autoflake -i -r --remove-all-unused-imports .
 	poetry run isort --atomic .
 	poetry run black .
+.PHONY: format
 
 test:
 	poetry run pytest
