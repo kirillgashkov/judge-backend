@@ -22,6 +22,7 @@ jobs:
         with:
           python-version: "3.10"
           cache: "poetry"
+      - run: poetry env use 3.10
       - run: poetry install
       - run: poetry run autoflake --check -i -r --remove-all-unused-imports .
       - run: poetry run isort --check --atomic .
