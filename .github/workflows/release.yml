@@ -1,0 +1,30 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: previous-tag
+        run: echo "::set-output name=tag::$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1))"
+
+      - name: Get current tag
+        id: current-tag
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+
+      - name: Generate release notes
+        run: git log "${{ steps.previous-tag.outputs.tag }}".."${{ steps.current-tag.outputs.tag }}" --reverse --oneline > "${{ runner.temp }}/release-notes.txt"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: ${{ runner.temp }}/release-notes.txt

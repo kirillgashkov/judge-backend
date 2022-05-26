@@ -1,0 +1,44 @@
+name: version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version-part-to-increment:
+        description: Version part to increment
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+        default: minor
+        required: true
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.SERVICE_SSH_KEY }}
+
+      - run: pipx install poetry
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump version
+        id: version-bump
+        run: poetry version "${{ github.event.inputs.version-part-to-increment }}"
+
+      - name: Get new version
+        id: new-version
+        run: echo "::set-output name=version::$(poetry version --short)"
+
+      - name: Commit, tag and push
+        run: |
+          git add pyproject.toml
+          git commit -m "Bump version to '${{ steps.new-version.outputs.version }}'"
+          git tag "v${{ steps.new-version.outputs.version }}"
+          git push --atomic origin main "v${{ steps.new-version.outputs.version }}"

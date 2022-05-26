@@ -5,3 +5,4 @@ __pycache__/
 !.gitignore
 !.dockerignore
 !.env.dev
+!.github/
