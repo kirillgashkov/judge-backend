@@ -11,11 +11,11 @@ lint:
 	poetry run mypy .
 .PHONY: lint
 
-format:
+fmt:
 	poetry run autoflake -i -r --remove-all-unused-imports .
 	poetry run isort --atomic .
 	poetry run black .
-.PHONY: format
+.PHONY: fmt
 
 test:
 	poetry run pytest
